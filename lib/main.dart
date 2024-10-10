@@ -14,11 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Webtoon Explorer App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow.shade700),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.yellow.shade600),
         useMaterial3: true,
       ),
       onGenerateRoute: generateRoute,
-      home:  HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
