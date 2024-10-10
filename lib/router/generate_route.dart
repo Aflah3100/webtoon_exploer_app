@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:webtoon_explorer_app/models/webtoon_model.dart';
+import 'package:webtoon_explorer_app/screens/detail_screen/detail_screen.dart';
 import 'package:webtoon_explorer_app/screens/home_screen/home_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
     case HomeScreen.routeName:
       return MaterialPageRoute(builder: (_) => HomeScreen());
+    case DetailScreen.routeName:
+      final webtoon = routeSettings.arguments as WebtoonModel;
+      return MaterialPageRoute(builder: (_) => DetailScreen(webtoon: webtoon));
 
     default:
       return MaterialPageRoute(

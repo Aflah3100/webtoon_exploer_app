@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webtoon_explorer_app/models/webtoon_model.dart';
 import 'package:webtoon_explorer_app/router/route_constants.dart';
+import 'package:webtoon_explorer_app/screens/detail_screen/detail_screen.dart';
 import 'package:webtoon_explorer_app/services/webtoon_api_services.dart';
 import 'package:webtoon_explorer_app/utils/app_fonts.dart';
 
@@ -80,74 +81,79 @@ class WebToonDisplayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 5,
-      child: Container(
-        width: double.maxFinite,
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        height: 120,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.white),
-        child: Row(
-          children: [
-            //Webtoon-image-container
-            SizedBox(
-              height: 120,
-              width: 130,
-              child: Image(
-                image: NetworkImage(
-                  webtoon.image ?? "",
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, DetailScreen.routeName,
+            arguments: webtoon);
+      },
+      child: Card(
+        color: Colors.white,
+        elevation: 5,
+        child: Container(
+          width: double.maxFinite,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          height: 120,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10), color: Colors.white),
+          child: Row(
+            children: [
+              //Webtoon-image-container
+              SizedBox(
+                height: 120,
+                width: 130,
+                child: Image(
+                  image: NetworkImage(
+                    webtoon.image ?? "",
+                  ),
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) {
+                    return const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Icon(
+                        color: Colors.red,
+                        Icons.error,
+                        size: 36,
+                      ),
+                    );
+                  },
                 ),
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Icon(
-                      color: Colors.red,
-                      Icons.error,
-                      size: 36,
-                    ),
-                  );
-                },
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-
-            //Webtoon-title
-
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      webtoon.title ?? "Webtoon",
-                      maxLines: 2,
-                      overflow: TextOverflow.clip,
-                      style: AppFonts.poppinsTextStyle(
-                          fontSize: 15,
-                          fontColor: Colors.black,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                ],
+              const SizedBox(
+                width: 10,
               ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            //trailing-icon
-            IconButton(
-                onPressed: () {}, icon: const Icon(Icons.favorite_outline))
-          ],
+
+              //Webtoon-title
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        webtoon.title ?? "Webtoon",
+                        maxLines: 2,
+                        overflow: TextOverflow.clip,
+                        style: AppFonts.poppinsTextStyle(
+                            fontSize: 15,
+                            fontColor: Colors.black,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 2,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              //trailing-icon
+              IconButton(
+                  onPressed: () {}, icon: const Icon(Icons.favorite_outline))
+            ],
+          ),
         ),
       ),
     );
