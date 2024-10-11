@@ -15,6 +15,7 @@ class HiveFavoritesDb {
       Box<HiveWebtoonModel> box =
           await Hive.openBox<HiveWebtoonModel>(_boxName);
       box.put(webtoonModel.id, webtoonModel);
+      box.close();
       return true;
     } catch (e) {
       return e;
@@ -24,7 +25,9 @@ class HiveFavoritesDb {
   //Fetch-favorites-database
   Future<List<HiveWebtoonModel>> fetchFavoriteWebtoons() async {
     Box<HiveWebtoonModel> box = await Hive.openBox<HiveWebtoonModel>(_boxName);
-    return box.values.toList();
+    final hivewebtoonsList = box.values.toList();
+    box.close();
+    return hivewebtoonsList;
   }
 
   //Delete-webtoon-from-favorites
@@ -34,6 +37,7 @@ class HiveFavoritesDb {
           await Hive.openBox<HiveWebtoonModel>(_boxName);
 
       box.delete(id);
+      box.close();
 
       return true;
     } catch (e) {
@@ -48,6 +52,8 @@ class HiveFavoritesDb {
           await Hive.openBox<HiveWebtoonModel>(_boxName);
 
       box.clear();
+
+      box.close();
 
       return true;
     } catch (e) {

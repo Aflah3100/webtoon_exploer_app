@@ -1,9 +1,9 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
-class RatingsDb {
-  RatingsDb._internal();
-  static RatingsDb instance = RatingsDb._internal();
-  factory RatingsDb() => instance;
+class HiveRatingsDb {
+  HiveRatingsDb._internal();
+  static HiveRatingsDb instance = HiveRatingsDb._internal();
+  factory HiveRatingsDb() => instance;
 
   static const _boxName = 'rating-box';
 
@@ -15,11 +15,14 @@ class RatingsDb {
 
   Future<double?> fetchRating({required webToonId}) async {
     final box = await Hive.openBox(_boxName);
-    return box.get(webToonId);
+    final rating = box.get(webToonId);
+    box.close();
+    return rating;
   }
 
   Future<void> deleteRating({required webToonId}) async {
     final box = await Hive.openBox(_boxName);
     box.delete(webToonId);
+    box.close();
   }
 }

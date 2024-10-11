@@ -21,7 +21,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    RatingsDb.instance
+    HiveRatingsDb.instance
         .fetchRating(webToonId: widget.webtoon.id!)
         .then((rating) {
       if (rating != null) {
@@ -159,13 +159,13 @@ class _DetailScreenState extends State<DetailScreen> {
               if (_currentRating == i.toDouble()) {
                 setState(() {
                   _currentRating = 0.0;
-                  RatingsDb.instance
+                  HiveRatingsDb.instance
                       .deleteRating(webToonId: widget.webtoon.id!);
                 });
               } else {
                 setState(() {
                   _currentRating = i.toDouble();
-                  RatingsDb.instance.saveRating(
+                  HiveRatingsDb.instance.saveRating(
                       webToonId: widget.webtoon.id!, rating: _currentRating);
                 });
               }
