@@ -143,6 +143,14 @@ class WebToonDisplayCard extends StatelessWidget {
                     const SizedBox(
                       height: 2,
                     ),
+                    Text(
+                      textAlign: TextAlign.center,
+                      webtoon.genre ?? "",
+                      style: AppFonts.poppinsTextStyle(
+                          fontSize: 14,
+                          fontColor: Colors.grey,
+                          fontWeight: FontWeight.w400),
+                    ),
                   ],
                 ),
               ),
