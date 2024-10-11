@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webtoon_explorer_app/models/webtoon_model.dart';
 import 'package:webtoon_explorer_app/router/route_constants.dart';
+import 'package:webtoon_explorer_app/screens/home_screen/home_screen.dart';
+import 'package:webtoon_explorer_app/screens/home_screen/widgets/webtoon_like_button.dart';
 import 'package:webtoon_explorer_app/utils/app_colors.dart';
 import 'package:webtoon_explorer_app/utils/app_fonts.dart';
 
@@ -76,10 +78,8 @@ class DetailScreen extends StatelessWidget {
                                 fontColor: Colors.black,
                                 fontWeight: FontWeight.bold)),
                       ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite),
-                      ),
+                      //Webtoon-like-button
+                      WebtoonLikeButton(webtoon: webtoon)
                     ],
                   ),
                   const SizedBox(height: 5),
