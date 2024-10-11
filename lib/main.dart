@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:webtoon_explorer_app/router/generate_route.dart';
 import 'package:webtoon_explorer_app/screens/home_screen/home_screen.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
   runApp(const MyApp());
 }
 
