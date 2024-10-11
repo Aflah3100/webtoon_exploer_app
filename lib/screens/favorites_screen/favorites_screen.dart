@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webtoon_explorer_app/database/functions/favorites_box/favorites_db.dart';
-import 'package:webtoon_explorer_app/database/models/hive_webtoon_model.dart';
 import 'package:webtoon_explorer_app/models/webtoon_model.dart';
 import 'package:webtoon_explorer_app/providers/favourite_webtoons_provider.dart';
 import 'package:webtoon_explorer_app/router/route_constants.dart';
-import 'package:webtoon_explorer_app/screens/home_screen/home_screen.dart';
 import 'package:webtoon_explorer_app/screens/home_screen/widgets/webtoon_display_card.dart';
 import 'package:webtoon_explorer_app/utils/app_fonts.dart';
 
