@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:webtoon_explorer_app/database/functions/ratings_box/ratings_db.dart';
 import 'package:webtoon_explorer_app/models/webtoon_model.dart';
 import 'package:webtoon_explorer_app/router/route_constants.dart';
 import 'package:webtoon_explorer_app/screens/home_screen/home_screen.dart';
@@ -6,10 +7,31 @@ import 'package:webtoon_explorer_app/screens/home_screen/widgets/webtoon_like_bu
 import 'package:webtoon_explorer_app/utils/app_colors.dart';
 import 'package:webtoon_explorer_app/utils/app_fonts.dart';
 
-class DetailScreen extends StatelessWidget {
+class DetailScreen extends StatefulWidget {
   static const routeName = RouteConstants.detailScreen;
   const DetailScreen({super.key, required this.webtoon});
   final WebtoonModel webtoon;
+
+  @override
+  State<DetailScreen> createState() => _DetailScreenState();
+}
+
+class _DetailScreenState extends State<DetailScreen> {
+  double _currentRating = 0.0;
+
+  @override
+  void initState() {
+    RatingsDb.instance
+        .fetchRating(webToonId: widget.webtoon.id!)
+        .then((rating) {
+      if (rating != null) {
+        setState(() {
+          _currentRating = rating;
+        });
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +55,7 @@ class DetailScreen extends StatelessWidget {
                 return FlexibleSpaceBar(
                   title: isCollapsed
                       ? Text(
-                          webtoon.title ?? 'Webtoon',
+                          widget.webtoon.title ?? 'Webtoon',
                           style: AppFonts.poppinsTextStyle(
                             fontSize: 18,
                             fontColor: Colors.black,
@@ -43,7 +65,7 @@ class DetailScreen extends StatelessWidget {
                       : null,
                   centerTitle: true,
                   background: Image.network(
-                    webtoon.image ?? "",
+                    widget.webtoon.image ?? "",
                     fit: BoxFit.fill,
                   ),
                   collapseMode: CollapseMode.pin,
@@ -69,7 +91,7 @@ class DetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(
-                        child: Text(webtoon.title ?? 'Webtoon',
+                        child: Text(widget.webtoon.title ?? 'Webtoon',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             textAlign: TextAlign.start,
@@ -79,12 +101,12 @@ class DetailScreen extends StatelessWidget {
                                 fontWeight: FontWeight.bold)),
                       ),
                       //Webtoon-like-button
-                      WebtoonLikeButton(webtoon: webtoon)
+                      WebtoonLikeButton(webtoon: widget.webtoon)
                     ],
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    "Creator: ${webtoon.creator ?? "Not found"}",
+                    "Creator: ${widget.webtoon.creator ?? "Not found"}",
                     style: AppFonts.poppinsTextStyle(
                         fontSize: 18,
                         fontColor: Colors.grey,
@@ -92,23 +114,28 @@ class DetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    "Genre: ${webtoon.genre ?? "Not found"}",
+                    "Genre: ${widget.webtoon.genre ?? "Not found"}",
                     style: AppFonts.poppinsTextStyle(
                         fontSize: 18,
                         fontColor: Colors.grey,
                         fontWeight: FontWeight.w500),
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    "Rating: ",
-                    style: AppFonts.poppinsTextStyle(
-                        fontSize: 18,
-                        fontColor: Colors.grey,
-                        fontWeight: FontWeight.w500),
+                  Row(
+                    children: [
+                      Text(
+                        "Rating: ",
+                        style: AppFonts.poppinsTextStyle(
+                            fontSize: 18,
+                            fontColor: Colors.grey,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      buildRatingBar()
+                    ],
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    " ${webtoon.description}\n${webtoon.description}\n${webtoon.description}",
+                    " ${widget.webtoon.description}\n${widget.webtoon.description}\n${widget.webtoon.description}",
                     style: AppFonts.poppinsTextStyle(
                         fontSize: 15,
                         fontColor: Colors.black,
@@ -120,6 +147,36 @@ class DetailScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget buildRatingBar() {
+    return Row(
+      children: [
+        for (int i = 1; i <= 5; i++)
+          GestureDetector(
+            onTap: () {
+              if (_currentRating == i.toDouble()) {
+                setState(() {
+                  _currentRating = 0.0;
+                  RatingsDb.instance
+                      .deleteRating(webToonId: widget.webtoon.id!);
+                });
+              } else {
+                setState(() {
+                  _currentRating = i.toDouble();
+                  RatingsDb.instance.saveRating(
+                      webToonId: widget.webtoon.id!, rating: _currentRating);
+                });
+              }
+            },
+            child: Icon(
+              i <= _currentRating ? Icons.star : Icons.star_border,
+              color: Colors.amber,
+              size: 30,
+            ),
+          ),
+      ],
     );
   }
 }
