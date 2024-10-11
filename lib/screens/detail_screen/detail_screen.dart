@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:webtoon_explorer_app/models/webtoon_model.dart';
+import 'package:webtoon_explorer_app/router/route_constants.dart';
 import 'package:webtoon_explorer_app/utils/app_colors.dart';
 import 'package:webtoon_explorer_app/utils/app_fonts.dart';
 
 class DetailScreen extends StatelessWidget {
-  static const routeName = '/detailScreen';
+  static const routeName = RouteConstants.detailScreen;
   const DetailScreen({super.key, required this.webtoon});
   final WebtoonModel webtoon;
 
